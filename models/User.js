@@ -4,8 +4,7 @@ const schema = new Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     name: {type: String, required: true},
-    surName: {type: String, required: true},
-    login: {type: String, required: true}
+    surName: {type: String, required: true}
 })
 
 module.exports = model('User', schema)
