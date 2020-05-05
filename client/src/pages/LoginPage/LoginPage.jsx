@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../../contexts/Auth";
 import { Link } from "react-router-dom";
+import { loginUser } from "../../agent";
 
 export const LoginPage = () => {
+  const auth = useContext(AuthContext);
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -18,6 +22,17 @@ export const LoginPage = () => {
       setLabelClass({ ...labelClass, [event.target.name]: 'active' })
     else
       setLabelClass({ ...labelClass, [event.target.name]: '' })
+  }
+
+  const loginHandler = async (event) => {
+    try {
+      event.preventDefault();
+      loginUser(form).then(data => {
+        auth.login(data.data.token, data.data.userId);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -58,7 +73,12 @@ export const LoginPage = () => {
             />
           </div>
 
-          <input type="button" className="button button-block" value="Log In"/>
+          <input
+            type="button"
+            className="button button-block"
+            value="Log In"
+            onClick={loginHandler}
+          />
         </form>
       </div>
     </div>

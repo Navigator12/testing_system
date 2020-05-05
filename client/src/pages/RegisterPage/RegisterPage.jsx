@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../../contexts/Auth";
 import { Link } from "react-router-dom";
+import { registerUser } from '../../agent';
 
 export const RegisterPage = () => {
+  const auth = useContext(AuthContext);
+
   const [form, setForm] = useState({
     name: '',
     surname: '',
@@ -15,6 +19,15 @@ export const RegisterPage = () => {
     email: '',
     password: '',
   });
+
+  const registerHandler = async (event) => {
+    try {
+      event.preventDefault();
+      registerUser(form).then(console.log);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -92,7 +105,12 @@ export const RegisterPage = () => {
             />
           </div>
 
-          <input type="submit" className="button button-block" value="Get Started"/>
+          <input
+            type="submit"
+            className="button button-block"
+            value="Get Started"
+            onClick={registerHandler}
+          />
         </form>
       </div>
     </div>

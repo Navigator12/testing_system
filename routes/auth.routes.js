@@ -30,7 +30,7 @@ router.post(
       const email = req.body.email;
       const password = req.body.password;
       const name = req.body.name;
-      const surName = req.body.surName;
+      const surname = req.body.surname;
 
       const candidate = await User.findOne({ email });
 
@@ -43,7 +43,7 @@ router.post(
         email,
         password: hashedPassword,
         name,
-        surName,
+        surname,
       });
 
       await user.save();
