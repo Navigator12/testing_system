@@ -5,17 +5,13 @@ import AuthContext from "./contexts/Auth";
 import useAuth from "./hooks/Auth";
 
 const App = () => {
-  const { login, logout, token, userId, ready } = useAuth();
+  const { login, logout, token, userId, isTeacher, ready } = useAuth();
   const isAuthenticated = !!token;
-  const routes = userRoutes(isAuthenticated, 0);
-
-  useEffect(() => {
-    console.log(token)
-  }, [token])
+  const routes = userRoutes(isAuthenticated, isTeacher);
 
   return (
     <AuthContext.Provider value={{
-      token, login, logout, userId, isAuthenticated
+      token, login, logout, userId, isAuthenticated, isTeacher
     }}>
       <BrowserRouter>
         {routes}

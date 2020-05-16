@@ -1,16 +1,17 @@
 import React, { useState, useContext } from "react";
-import AuthContext from "../../contexts/Auth";
+import { useHistory } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import { registerUser } from '../../agent';
 
 export const RegisterPage = () => {
-  const auth = useContext(AuthContext);
+  const history = useHistory()
 
   const [form, setForm] = useState({
     name: '',
     surname: '',
     email: '',
     password: '',
+    isTeacher: false
   });
 
   const [labelClass, setLabelClass] = useState({
@@ -23,18 +24,26 @@ export const RegisterPage = () => {
   const registerHandler = async (event) => {
     try {
       event.preventDefault();
-      registerUser(form).then(console.log);
+      registerUser(form).then(res => {
+        if (res.status === 201)
+          history.push('/login')
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
   const changeHandler = event => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-    if (event.target.value)
-      setLabelClass({ ...labelClass, [event.target.name]: 'active' })
-    else
-      setLabelClass({ ...labelClass, [event.target.name]: '' })
+    if (event.target.name === 'isTeacher')
+      setForm({...form, isTeacher: !form.isTeacher})
+
+    else {
+      setForm({ ...form, [event.target.name]: event.target.value })
+      if (event.target.value)
+        setLabelClass({ ...labelClass, [event.target.name]: 'active' })
+      else
+        setLabelClass({ ...labelClass, [event.target.name]: '' })
+    }
   }
 
   return (
@@ -103,6 +112,17 @@ export const RegisterPage = () => {
               autoComplete="off"
               onChange={changeHandler}
             />
+          </div>
+
+          <div className="as_admin">
+            <input
+              type="checkbox"
+              name="isTeacher"
+              className="checkboxField"
+              value={form.isTeacher}
+              onChange={changeHandler}
+            />
+            <label>Register as teacher</label>
           </div>
 
           <input

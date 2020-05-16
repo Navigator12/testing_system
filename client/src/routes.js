@@ -4,11 +4,17 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
 
-export const userRoutes = (isAuthenticated, isTeacher = false) => {
+export const userRoutes = (isAuthenticated, isTeacher) => {
   if (isAuthenticated) {
     if (isTeacher) {
       return (
-        <></>
+        <Switch>
+          <Route path="/" exact>
+            <MainPage />
+          </Route>
+
+          <Redirect to="/" />
+        </Switch>
       )
     }
 

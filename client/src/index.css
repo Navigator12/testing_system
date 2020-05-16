@@ -176,3 +176,41 @@ textarea {
     margin-top: -20px;
     text-align: right;
 }
+
+.as_admin {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    user-select: none;
+    margin-bottom: 20px;
+    margin-top: -10px;
+}
+
+.as_admin > label {
+    position: absolute;
+    left: 40px;
+    top: -11px;
+    min-width: 200px;
+}
+
+.checkboxField:before {
+    margin: 0;
+    content: " ";
+    background-color: white;
+    height: 20px;
+    outline: 2px solid #fff;
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: white;
+    transition-property: background-color, border-color;
+    box-sizing: border-box;
+    display: inline-block;
+    content: close-quote;
+    transition-duration: .25s;
+    width: 20px;
+}
+
+.checkboxField:checked:before {
+    background-color: #1ab188;
+    border-color: white;
+}
