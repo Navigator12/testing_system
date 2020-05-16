@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Teacher = require("../models/Teacher");
 const router = Router();
 require("dotenv").config();
 
@@ -14,10 +15,16 @@ router.post(
     check("password", "Мінімальна довжина пароля 6 символів").isLength({
       min: 6,
     }),
+    check("name", "Мінімальна довжина імені 1 символ").isLength({
+      min: 1,
+    }),
+    check("surname", "Мінімальна довжина прізвища 1 символ").isLength({
+      min: 1,
+    }),
+    check("isTeacher", "WTF").isBoolean()
   ],
   async (req, res) => {
     try {
-      console.log("Body:", req.body);
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -27,28 +34,44 @@ router.post(
         });
       }
 
-      const email = req.body.email;
-      const password = req.body.password;
-      const name = req.body.name;
-      const surname = req.body.surname;
+      const { email, password, name, surname, isTeacher } = req.body;
 
-      const candidate = await User.findOne({ email });
+      const candidate = (await User.findOne({ email })) || (await Teacher.findOne({ email }));
 
       if (candidate) {
         return res.status(400).json({ message: "Такий користувач вже існує" });
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
-      const user = new User({
-        email,
-        password: hashedPassword,
-        name,
-        surname,
-      });
 
-      await user.save();
+      if (!isTeacher)
+      {
+        const user = new User({
+          email,
+          password: hashedPassword,
+          name,
+          surname,
+        });
 
-      res.status(201).json({ message: "Користувач створений" });
+        await user.save();
+
+        res.status(201).json({ message: "Користувач створений" });
+      }
+
+      else
+      {
+        const teacher = new Teacher({
+          email,
+          password: hashedPassword,
+          name,
+          surname,
+        });
+
+        await teacher.save();
+
+        res.status(201).json({ message: "Викладач створений" });
+      }
+
     } catch (e) {
       console.log(e.message);
       res.status(500).json({ message: "Something went wrong, try again" });
@@ -62,6 +85,7 @@ router.post(
   [
     check("email", "Некоректний email").normalizeEmail().isEmail(),
     check("password", "Неправильний пароль").exists(),
+    check("isTeacher", "WTF").isBoolean()
   ],
   async (req, res) => {
     try {
@@ -74,25 +98,50 @@ router.post(
         });
       }
 
-      const { email, password } = req.body;
+      const { email, password, isTeacher } = req.body;
 
-      const user = await User.findOne({ email });
+      if (!isTeacher)
+      {
+        const user = await User.findOne({ email })
 
-      if (!user) {
-        return res.status(400).json({ message: "Користувача не знайдено" });
+        if (!user) {
+          return res.status(400).json({ message: "Користувача не знайдено" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+          return res.status(400).json({ message: "Неправильний пароль" });
+        }
+
+        const token = jwt.sign({ userId: user.id, isTeacher }, process.env.jwtSecret, {
+          expiresIn: "1h",
+        });
+
+        res.json({ token, userId: user.id, isTeacher });
       }
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      else
+      {
+        const teacher = await Teacher.findOne({ email });
 
-      if (!isMatch) {
-        return res.status(400).json({ message: "Неправильний пароль" });
+        if (!teacher) {
+          return res.status(400).json({ message: "Викладача не знайдено" });
+        }
+
+        const isMatch = await bcrypt.compare(password, teacher.password);
+
+        if (!isMatch) {
+          return res.status(400).json({ message: "Неправильний пароль" });
+        }
+
+        const token = jwt.sign({ userId: teacher.id, isTeacher }, process.env.jwtSecret, {
+          expiresIn: "1h",
+        });
+
+        res.json({ token, userId: teacher.id, isTeacher });
       }
 
-      const token = jwt.sign({ userId: user.id }, process.env.jwtSecret, {
-        expiresIn: "1h",
-      });
-
-      res.json({ token, userId: user.id });
     } catch (e) {
       console.log(e.message);
       res.status(500).json({ message: "Something went wrong, try again" });

@@ -7,4 +7,4 @@ const schema = new Schema({
   surname: {type: String, required: true}
 })
 
-module.exports = model('User', schema)
+module.exports = model('Teacher', schema)
