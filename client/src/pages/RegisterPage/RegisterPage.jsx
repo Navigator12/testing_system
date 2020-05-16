@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import { registerUser } from '../../agent';
@@ -21,13 +21,17 @@ export const RegisterPage = () => {
     password: '',
   });
 
+  const [error, setError] = useState(null);
+
   const registerHandler = async (event) => {
     try {
       event.preventDefault();
-      registerUser(form).then(res => {
-        if (res.status === 201)
+      registerUser(form)
+        .then(res => {
           history.push('/login')
-      });
+        }).catch(error => {
+          setError(error.response.data.message);
+        });
     } catch (e) {
       console.log(e);
     }
@@ -55,6 +59,11 @@ export const RegisterPage = () => {
 
       <div className="tab-content">
         <h1>Sign Up for Free</h1>
+
+        {error && <div className="auth-error">
+          <h2>{error}</h2>
+        </div>}
+
         <form>
           <div className="top-row">
             <div className="field-wrap">

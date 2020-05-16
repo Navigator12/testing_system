@@ -17,6 +17,8 @@ export const LoginPage = () => {
     password: '',
   });
 
+  const [error, setError] = useState(false);
+
   const changeHandler = event => {
     if (event.target.name === 'isTeacher')
       setForm({...form, isTeacher: !form.isTeacher})
@@ -33,9 +35,12 @@ export const LoginPage = () => {
   const loginHandler = async (event) => {
     try {
       event.preventDefault();
-      loginUser(form).then(res => {
-        auth.login(res.data.token, res.data.userId, res.data.isTeacher);
-      });
+      loginUser(form)
+        .then(res => {
+          auth.login(res.data.token, res.data.userId, res.data.isTeacher);
+        }).catch(error => {
+          setError(true);
+        });
     } catch (e) {
       console.log(e);
     }
@@ -50,6 +55,11 @@ export const LoginPage = () => {
 
       <div className="tab-content">
         <h1>Welcome Back!</h1>
+
+        {error && <div className="auth-error">
+          <h2>Invalid data</h2>
+        </div>}
+
         <form>
           <div className="field-wrap">
             <label className={labelClass.email}>

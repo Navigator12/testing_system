@@ -112,7 +112,6 @@ input, textarea {
     height: 100%;
     padding: 10px 10px;
     background: none;
-    background-image: none;
     border: 1px solid #a0b3b0;
     color: #ffffff;
     border-radius: 0;
@@ -132,6 +131,16 @@ textarea {
 .field-wrap {
     position: relative;
     margin-bottom: 40px;
+}
+
+.auth-error {
+    position: relative;
+    text-align: center;
+}
+
+.auth-error > h2 {
+    color: #ffffff;
+    font-weight: 300;
 }
 
 .top-row:after {
