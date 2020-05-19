@@ -4,8 +4,9 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Teacher = require("../models/Teacher");
-const router = Router();
 require("dotenv").config();
+
+const router = Router();
 
 // /api/auth/register
 router.post(
