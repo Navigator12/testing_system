@@ -57,4 +57,19 @@ router.get("/index", auth, async (req, res) => {
   }
 });
 
+// /api/contest/:id
+
+router.get("/:id", async (req, res) => {
+  try {
+    const contestId = req.params.id;
+    console.log(contestId);
+    const contest = await Contest.findOne({ _id: new ObjectId(contestId)});
+
+    res.json({ contest });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Server error"});
+  }
+});
+
 module.exports = router;
