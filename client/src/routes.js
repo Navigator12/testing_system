@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
 import ContestBuilder from "./pages/ContestBuilder";
+import {ShowContest} from "./pages/ShowContest/ShowContest";
 
 export const userRoutes = (isAuthenticated, isTeacher) => {
   if (isAuthenticated) {
@@ -27,8 +28,10 @@ export const userRoutes = (isAuthenticated, isTeacher) => {
         <Route path="/" exact>
           <MainPage />
         </Route>
-
-        <Redirect to="/" />
+        <Route path="/contest/:id" exact>
+          <ShowContest />
+        </Route>
+        {/*<Redirect to="/" />*/}
       </Switch>
     )
   }
@@ -42,7 +45,7 @@ export const userRoutes = (isAuthenticated, isTeacher) => {
         <RegisterPage />
       </Route>
 
-      <Redirect to="/login" />
+      {/*<Redirect to="/login" />*/}
     </Switch>
   );
 };

@@ -11,3 +11,8 @@ export const loginUser = (user) => {
   const url = `${API_URL}/api/auth/login`;
   return axios.post(url, user);
 };
+
+export const getContestById = (id) => {
+  const url = `${API_URL}/api/contest/${id}`;
+  return axios.get(url);
+}
