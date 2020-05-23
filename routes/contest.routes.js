@@ -14,9 +14,6 @@ router.post("/create", auth, async (req, res) => {
     const { userId, isTeacher } = req.user;
     const { name, tasks, answers } = req.body;
 
-    console.log(`${userId} -> ${typeof userId}`);
-    res.json({"kk": "pp"});
-
     const teacher = await Teacher.findOne({ _id: new ObjectId(userId) });
 
     if (!teacher)
@@ -38,7 +35,7 @@ router.post("/create", auth, async (req, res) => {
     await teacher.save();
     await contest.save();
 
-    res.status(201).json({ message: "Контест створений" });
+    res.status(201).json({ message: "Контест створений", contestId: contest._id });
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: "Something went wrong, try again" });
@@ -65,13 +62,13 @@ router.get("/index", auth, async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const contestId = req.params.id;
-    console.log(contestId);
+
     const contest = await Contest.findOne({ _id: new ObjectId(contestId)});
 
     res.json({ contest });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: "Server error"});
+    res.status(500).json({ message: "Something went wrong, try again" });
   }
 });
 

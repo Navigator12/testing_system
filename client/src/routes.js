@@ -17,8 +17,11 @@ export const userRoutes = (isAuthenticated, isTeacher) => {
           <Route path="/contest/builder" exact>
             <ContestBuilder />
           </Route>
+          <Route path="/contest/:id" exact>
+            <ShowContest />
+          </Route>
 
-          <Redirect to="/contest/builder" />
+          {/*<Redirect to="/contest/builder" />*/}
         </Switch>
       )
     }

@@ -12,7 +12,12 @@ export const loginUser = (user) => {
   return axios.post(url, user);
 };
 
+export const createContest = (contest, token) => {
+  const url = `${API_URL}/api/contest/create`;
+  return axios.post(url, contest, { headers: { Authorization: `Bearer ${token}` } });
+};
+
 export const getContestById = (id) => {
   const url = `${API_URL}/api/contest/${id}`;
   return axios.get(url);
-}
+};
