@@ -14,6 +14,9 @@ router.post("/create", auth, async (req, res) => {
     const { userId, isTeacher } = req.user;
     const { name, tasks, answers } = req.body;
 
+    console.log(`${userId} -> ${typeof userId}`);
+    res.json({"kk": "pp"});
+
     const teacher = await Teacher.findOne({ _id: new ObjectId(userId) });
 
     if (!teacher)
