@@ -86,7 +86,6 @@ router.post(
   [
     check("email", "Некоректний email").normalizeEmail().isEmail(),
     check("password", "Неправильний пароль").exists(),
-    check("isTeacher", "WTF").isBoolean()
   ],
   async (req, res) => {
     try {
@@ -99,48 +98,44 @@ router.post(
         });
       }
 
-      const { email, password, isTeacher } = req.body;
+      const { email, password } = req.body;
 
-      if (!isTeacher)
+      let isTeacher = null;
+      let user = await User.findOne({ email });
+      if (user)
       {
-        const user = await User.findOne({ email })
-
-        if (!user) {
-          return res.status(400).json({ message: "Користувача не знайдено" });
-        }
-
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
           return res.status(400).json({ message: "Неправильний пароль" });
         }
 
+        isTeacher = false;
+      }
+      else
+      {
+        user = await Teacher.findOne({ email });
+
+        if (user) {
+          const isMatch = await bcrypt.compare(password, user.password);
+
+          if (!isMatch) {
+            return res.status(400).json({message: "Неправильний пароль"});
+          }
+
+          isTeacher = true;
+        }
+      }
+
+      if (isTeacher === null)
+        return res.status(400).json({ message: "Користувача не знайдено" });
+      else
+      {
         const token = jwt.sign({ userId: user.id, isTeacher }, process.env.jwtSecret, {
-          expiresIn: "1h",
+          expiresIn: "2h",
         });
 
         res.json({ token, userId: user.id, isTeacher });
-      }
-
-      else
-      {
-        const teacher = await Teacher.findOne({ email });
-
-        if (!teacher) {
-          return res.status(400).json({ message: "Викладача не знайдено" });
-        }
-
-        const isMatch = await bcrypt.compare(password, teacher.password);
-
-        if (!isMatch) {
-          return res.status(400).json({ message: "Неправильний пароль" });
-        }
-
-        const token = jwt.sign({ userId: teacher.id, isTeacher }, process.env.jwtSecret, {
-          expiresIn: "1h",
-        });
-
-        res.json({ token, userId: teacher.id, isTeacher });
       }
 
     } catch (e) {

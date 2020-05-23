@@ -9,7 +9,6 @@ export const LoginPage = () => {
   const [form, setForm] = useState({
     email: '',
     password: '',
-    isTeacher: false
   });
 
   const [labelClass, setLabelClass] = useState({
@@ -20,16 +19,11 @@ export const LoginPage = () => {
   const [error, setError] = useState(false);
 
   const changeHandler = event => {
-    if (event.target.name === 'isTeacher')
-      setForm({...form, isTeacher: !form.isTeacher})
-
-    else {
-      setForm({ ...form, [event.target.name]: event.target.value })
-      if (event.target.value)
-        setLabelClass({ ...labelClass, [event.target.name]: 'active' })
-      else
-        setLabelClass({ ...labelClass, [event.target.name]: '' })
-    }
+    setForm({ ...form, [event.target.name]: event.target.value })
+    if (event.target.value)
+      setLabelClass({ ...labelClass, [event.target.name]: 'active' })
+    else
+      setLabelClass({ ...labelClass, [event.target.name]: '' })
   }
 
   const loginHandler = async (event) => {
@@ -87,17 +81,6 @@ export const LoginPage = () => {
               autoComplete="off"
               onChange={changeHandler}
             />
-          </div>
-
-          <div className="as_admin">
-            <input
-              type="checkbox"
-              name="isTeacher"
-              className="checkboxField"
-              value={form.isTeacher}
-              onChange={changeHandler}
-            />
-            <label>Log in as teacher</label>
           </div>
 
           <input
