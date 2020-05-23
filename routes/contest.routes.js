@@ -12,7 +12,7 @@ const router = Router();
 router.post("/create", auth, async (req, res) => {
   try {
     const { userId, isTeacher } = req.user;
-    const { tasks, answers } = req.body;
+    const { name, tasks, answers } = req.body;
 
     const teacher = await Teacher.findOne({ _id: new ObjectId(userId) });
 
@@ -24,6 +24,7 @@ router.post("/create", auth, async (req, res) => {
 
     const contest = new Contest({
       teacher: userId,
+      name,
       students: [],
       answers,
       tasks,

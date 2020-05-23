@@ -15,10 +15,10 @@ export const RegisterPage = () => {
   });
 
   const [labelClass, setLabelClass] = useState({
-    name: '',
-    surname: '',
-    email: '',
-    password: '',
+    name: 'label',
+    surname: 'label',
+    email: 'label',
+    password: 'label',
   });
 
   const [error, setError] = useState(null);
@@ -44,9 +44,9 @@ export const RegisterPage = () => {
     else {
       setForm({ ...form, [event.target.name]: event.target.value })
       if (event.target.value)
-        setLabelClass({ ...labelClass, [event.target.name]: 'active' })
+        setLabelClass({ ...labelClass, [event.target.name]: 'label active' })
       else
-        setLabelClass({ ...labelClass, [event.target.name]: '' })
+        setLabelClass({ ...labelClass, [event.target.name]: 'label' })
     }
   }
 
@@ -72,6 +72,7 @@ export const RegisterPage = () => {
               </label>
               <input
                 type="text"
+                className="input"
                 name="name"
                 value={form.name}
                 required
@@ -86,6 +87,7 @@ export const RegisterPage = () => {
               </label>
               <input
                 type="text"
+                className="input"
                 name="surname"
                 value={form.surname}
                 required
@@ -101,6 +103,7 @@ export const RegisterPage = () => {
             </label>
             <input
               type="email"
+              className="input"
               name="email"
               value={form.email}
               required
@@ -115,6 +118,7 @@ export const RegisterPage = () => {
             </label>
             <input
               type="password"
+              className="input"
               name="password"
               value={form.password}
               required
@@ -131,7 +135,7 @@ export const RegisterPage = () => {
               value={form.isTeacher}
               onChange={changeHandler}
             />
-            <label>Register as teacher</label>
+            <label className="label">Register as teacher</label>
           </div>
 
           <input

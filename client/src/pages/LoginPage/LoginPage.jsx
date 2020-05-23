@@ -12,8 +12,8 @@ export const LoginPage = () => {
   });
 
   const [labelClass, setLabelClass] = useState({
-    email: '',
-    password: '',
+    email: 'label',
+    password: 'label',
   });
 
   const [error, setError] = useState(false);
@@ -21,9 +21,9 @@ export const LoginPage = () => {
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
     if (event.target.value)
-      setLabelClass({ ...labelClass, [event.target.name]: 'active' })
+      setLabelClass({ ...labelClass, [event.target.name]: 'label active' })
     else
-      setLabelClass({ ...labelClass, [event.target.name]: '' })
+      setLabelClass({ ...labelClass, [event.target.name]: 'label' })
   }
 
   const loginHandler = async (event) => {
@@ -62,6 +62,7 @@ export const LoginPage = () => {
             <input
               type="email"
               name="email"
+              className="input"
               value={form.email}
               required
               autoComplete="off"
@@ -76,6 +77,7 @@ export const LoginPage = () => {
             <input
               type="password"
               name="password"
+              className="input"
               value={form.password}
               required
               autoComplete="off"
@@ -85,7 +87,7 @@ export const LoginPage = () => {
 
           <input
             type="button"
-            className="button button-block"
+            className="button button-block input"
             value="Log In"
             onClick={loginHandler}
           />
