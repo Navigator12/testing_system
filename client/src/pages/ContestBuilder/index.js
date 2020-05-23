@@ -1,3 +1,3 @@
-import { ContestBuilder } from './ContesBuilder';
+import { ContestBuilder } from './ContestBuilder';
 
 export default ContestBuilder;
