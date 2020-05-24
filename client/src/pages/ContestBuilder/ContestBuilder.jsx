@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../contexts/Auth/auth.context";
 import { createContest } from "../../agent";
 import styles from './ContestBuilder.module.scss';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 
 export const ContestBuilder = () => {
   const history = useHistory();
@@ -77,134 +79,126 @@ export const ContestBuilder = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div>
-        <label>
-          Введіть назву контесту
-          <input
-            name="name"
-            value={name}
-            onChange={event => setName(event.target.value)}
-          />
-        </label>
-      </div>
+      <Input
+        value={name}
+        label="Name of contest"
+        onChange={text => setName(text)}
+      />
 
-      <div>
+      <div className={styles.tests}>
         {
           tasks.map((el, index) =>
             el.type === 'test' ?
             (
-              <>
-                <p>Питання {index}:</p>
-                <p>{el.question}</p>
-                <p>Варіанти:</p>
-                {el.variants.map((variant, index) => <p>{index + 1} {variant}</p>)}
-                <p>Відповідь:</p>
-                <p>{answers[index]}</p>
-              </>
+              <div className={styles.test}>
+                <h2>Test {index+1}:</h2>
+                <h3>{el.question}</h3>
+                <h2>Variants:</h2>
+                <div className={styles.variants}>
+                  {el.variants.map((variant, index) => <h3>{index + 1} {variant}</h3>)}
+                </div>
+                <h2>Answer:</h2>
+                <h3>{answers[index]}</h3>
+              </div>
             ) : (
-              <>
-                <p>Питання {index}:</p>
-                <p>{el.question}</p>
-                <p>Відповідь:</p>
-                <p>{answers[index]}</p>
-              </>
+              <div className={styles.test}>
+                <h2>Test {index+1}:</h2>
+                <h3>{el.question}</h3>
+                <h2>Answer:</h2>
+                <h3>{answers[index]}</h3>
+              </div>
             )
           )
         }
       </div>
 
       <div className={activeQuestion ? '' : styles.unvisible}>
-        <label>
-          Вкажіть питання
-          <input
-            name="name"
-            value={currentQuestion.question}
-            onChange={event => setCurrentQuestion({...currentQuestion, question: event.target.value})}
-            autoComplete={false}
-          />
-        </label><br/>
-
-        <label>
-          Вкажіть відповідь
-          <input
-            name="answer"
-            value={currentQuestion.answer}
-            onChange={event => setCurrentQuestion({...currentQuestion, answer: event.target.value})}
-            autoComplete={false}
-          />
-        </label><br/>
-        <input
-          type="submit"
-          value="Підтвердити запитання"
-          onClick={handleSubmitQuestion}
+        <Input
+          value={currentQuestion.question}
+          onChange={text => setCurrentQuestion({...currentQuestion, question: text})}
+          label="Question"
+          question={true}
         />
+
+        <Input
+          value={currentQuestion.answer}
+          onChange={text => setCurrentQuestion({...currentQuestion, answer: text})}
+          label="Answer"
+          question={true}
+        />
+
+        <div className={styles.test_section}>
+          <Button
+            onClick={handleSubmitQuestion}
+            value="Submit"
+            variant="black"
+          />
+          <Button
+            onClick={() => setActiveQuestion(false)}
+            value="Cancel"
+            variant="black"
+          />
+        </div>
       </div>
 
       <div className={activeTest ? '' : styles.unvisible}>
-        <label>
-          Вкажіть питання
-          <input
-            name="name"
-            value={currentTest.question}
-            onChange={event => setCurrentTest({...currentTest, question: event.target.value})}
-            autoComplete={false}
-          />
-        </label><br/>
-
-        <label>
-          Варіант 1
-          <input
-            value={currentTest.variants[0]}
-            onChange={event => changeTest(0, event.target.value)}
-            autoComplete={false}
-          />
-        </label><br/>
-        <label>
-          Варіант 2
-          <input
-            value={currentTest.variants[1]}
-            onChange={event => changeTest(1, event.target.value)}
-            autoComplete={false}
-          />
-        </label><br/>
-        <label>
-          Варіант 3
-          <input
-            value={currentTest.variants[2]}
-            onChange={event => changeTest(2, event.target.value)}
-            autoComplete={false}
-          />
-        </label><br/>
-        <label>
-          Варіант 4
-          <input
-            value={currentTest.variants[3]}
-            onChange={event => changeTest(3, event.target.value)}
-            autoComplete={false}
-          />
-        </label><br/>
-        <label>
-          Вкажіть номер відповіді
-          <input
-            value={currentTest.answer}
-            onChange={event => setCurrentTest({...currentTest, answer: event.target.value})}
-            autoComplete={false}
-          />
-        </label><br/>
-        <input
-          type="submit"
-          value="Підтвердити тест"
-          onClick={handleSubmitTest}
+        <Input
+          value={currentTest.question}
+          onChange={text => setCurrentTest({...currentTest, question: text})}
+          label="Question"
+          question={true}
         />
+
+        <Input
+          value={currentTest.variants[0]}
+          onChange={text => changeTest(0, text)}
+          label="Variant 1"
+          question={true}
+        />
+        <Input
+          value={currentTest.variants[1]}
+          onChange={text => changeTest(1, text)}
+          label="Variant 2"
+          question={true}
+        />
+        <Input
+          value={currentTest.variants[2]}
+          onChange={text => changeTest(2, text)}
+          label="Variant 3"
+          question={true}
+        />
+        <Input
+          value={currentTest.variants[3]}
+          onChange={text => changeTest(3, text)}
+          label="Variant 4"
+          question={true}
+        />
+
+        <Input
+          value={currentTest.answer}
+          onChange={text => setCurrentTest({...currentTest, answer: text})}
+          label="Number of answer"
+          question={true}
+        />
+
+        <div className={styles.test_section}>
+          <Button
+            onClick={handleSubmitTest}
+            value="Submit"
+            variant="black"
+          />
+          <Button
+            onClick={() => setActiveTest(false)}
+            value="Cancel"
+            variant="black"
+          />
+        </div>
       </div>
 
-      <div>
-        <button onClick={handleAddTest}>Add test</button>
-        <button onClick={handleAddQuestion}>Add question</button>
-      </div>
-
-      <div>
-        <button onClick={handleSubmitContest}>Submit contest</button>
+      <div className={styles.footer_section}>
+        <Button onClick={handleAddTest} value="Add test" variant="primary" />
+        <Button onClick={handleAddQuestion} value="Add Question" variant="primary" />
+        <Button onClick={handleSubmitContest} value="Submit contest" variant="black" />
       </div>
     </div>
   );

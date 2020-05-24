@@ -1,54 +1,17 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
 import ContestBuilder from "./pages/ContestBuilder";
-import {ShowContest} from "./pages/ShowContest/ShowContest";
+import ShowContest from "./pages/ShowContest";
 
 export const userRoutes = (isAuthenticated, isTeacher) => {
-  if (isAuthenticated) {
-    if (isTeacher) {
-      return (
-        <Switch>
-          <Route path="/" exact>
-            <MainPage />
-          </Route>
-          <Route path="/contest/builder" exact>
-            <ContestBuilder />
-          </Route>
-          <Route path="/contest/:id" exact>
-            <ShowContest />
-          </Route>
-
-          {/*<Redirect to="/contest/builder" />*/}
-        </Switch>
-      )
-    }
-
-    else return (
-      <Switch>
-        <Route path="/" exact>
-          <MainPage />
-        </Route>
-        <Route path="/contest/:id" exact>
-          <ShowContest />
-        </Route>
-        {/*<Redirect to="/" />*/}
-      </Switch>
-    )
-  }
-
-  return (
-    <Switch>
-      <Route path="/login" exact>
-        <LoginPage />
-      </Route>
-      <Route path="/register" exact>
-        <RegisterPage />
-      </Route>
-
-      {/*<Redirect to="/login" />*/}
-    </Switch>
-  );
+  return <Switch>
+    {!isAuthenticated && <Route exact path='/' component={LoginPage} />}
+    {!isAuthenticated && <Route exact path='/register' component={RegisterPage} />}
+    {isAuthenticated && <Route exact path='/' component={MainPage} />}
+    {isTeacher && <Route path='/contest/builder' component={ContestBuilder} /> }
+    {isAuthenticated && <Route path='/contest/:id' component={ShowContest} /> }
+  </Switch>
 };

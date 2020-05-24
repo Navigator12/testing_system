@@ -53,7 +53,7 @@ export const RegisterPage = () => {
   return (
     <div className="form">
       <ul className="tab-group">
-        <li className="tab"><Link to='/login'>Log In</Link></li>
+        <li className="tab"><Link to='/'>Log In</Link></li>
         <li className="tab active"><Link to='/register'>Sign Up</Link></li>
       </ul>
 

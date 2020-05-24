@@ -1,9 +1,36 @@
+@import "../../styles/colors.scss";
+
 .wrapper {
-  width: 1000px;
+  width: 800px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 7em;
 }
 
 .unvisible {
   display: none;
+}
+
+.tests {
+  margin: 0 2em;
+
+  .test:not(:last-child) {
+    border-bottom: 2px solid $primaryColor;
+  }
+
+  .variants {
+    margin-left: 3em;
+  }
+}
+
+.test_section {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer_section {
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }

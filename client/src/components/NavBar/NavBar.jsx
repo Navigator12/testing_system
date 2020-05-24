@@ -9,7 +9,7 @@ export const NavBar = () => {
     event.preventDefault();
     auth.logout();
 
-    history.push("/login");
+    history.push("/");
   };
 
   return (

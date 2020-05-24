@@ -1,0 +1,51 @@
+@import "../../styles/colors.scss";
+
+.root {
+  border: none;
+  font-weight: 300;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition-duration: 0.4s;
+  border-radius: 0.4em;
+  margin: 0.5em;
+  outline: 0;
+  &:hover {
+    opacity: 70%;
+  }
+  &:active {
+    border-style: outset;
+  }
+  &:focus{
+    /*some code here*/
+  }
+}
+.primary {
+  background-color: $primaryColor;
+  color: $secondaryColor;
+}
+.secondary {
+  background-color: $secondaryColor;
+  border: 1px solid $primaryColor;
+  color: $primaryColor;
+}
+.black {
+  background-color: $black;
+  color: $secondaryColor;
+}
+
+.small {
+  width: 6.5em;
+  height: 2.5em;
+  font-size: 0.8em;
+}
+.medium {
+  width: 7.8em;
+  height: 2.7em;
+  font-size: 1.3em;
+}
+.large {
+  font-size: 1.5em;
+  width: 8.6em;
+  height: 2.6em;
+}
