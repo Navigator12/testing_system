@@ -51,7 +51,7 @@ router.get("/index", auth, async (req, res) => {
       let contests = await Contest.find({ teacher: userId });
       return res.json({ contests });
     } else {
-      const user = await User.findOne({ _id: new ObjectId(userId) }).populate('contests');
+      const user = await User.findOne({ _id: new ObjectId(userId) }).populate('contests', '-answers');
       return res.json({ contests: user.contests });
     }
   } catch (e) {
@@ -64,8 +64,13 @@ router.get("/index", auth, async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const contestId = req.params.id;
+    const { isTeacher } = req.user;
 
-    const contest = await Contest.findOne({ _id: new ObjectId(contestId)});
+    let contest;
+    if (isTeacher)
+      contest = await Contest.findOne({ _id: new ObjectId(contestId)});
+    else
+      contest = await Contest.findOne({ _id: new ObjectId(contestId)}).select('-answers');
 
     res.json({ contest });
   } catch (e) {
