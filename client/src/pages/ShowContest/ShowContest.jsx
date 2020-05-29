@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { getContestById } from '../../agent';
+import AuthContext from "../../contexts/Auth";
 import styles from './ShowContest.module.scss';
 
 export const ShowContest = () => {
 
 	const contestId = useParams().id;
 	const [currentContest, setCurrentContest] = useState({});
+	const { token } = useContext(AuthContext);
 
 	useEffect(() => {
-		getContestById(contestId)
+		getContestById(contestId, token)
 			.then(res => setCurrentContest(res.data.contest));
 	}, [])
 

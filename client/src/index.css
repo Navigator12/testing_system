@@ -226,15 +226,11 @@ h1 {
     border-color: white;
 }
 
-
-
-/* NAVBAR */
+/* start NAVBAR styles*/
 .smth_h2_ul{
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
-    font: inherit;
     vertical-align: baseline;
 }
 ol, ul {
@@ -260,11 +256,11 @@ nav {
 }
 .sitename > h2::before{
     content: "✔";
-    margin-right: 10px
+    margin-right: 10px;
 }
 .list_in_head{
-    width: 430px;
-    height: 100%;
+    width: 500px;
+    /*height: 100%;*/
     float: right;
     padding-top: 20px;
     padding-right: 10px
@@ -288,3 +284,4 @@ nav {
     content: url(photos/signs.png);
     margin-right: 6px
 }
+/* end NAVBAR styles*/

@@ -24,8 +24,11 @@ export const NavBar = () => {
               <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/contest/builder">Contests</NavLink>
+              <NavLink to="/contests">Contests</NavLink>
             </li>
+            {auth.isTeacher && <li>
+              <NavLink to="/contest/builder">Builder</NavLink>
+            </li>}
             <li>|</li>
             <li className="profile_pic">
               <a href="">Profile</a>

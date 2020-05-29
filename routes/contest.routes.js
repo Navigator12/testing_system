@@ -61,7 +61,7 @@ router.get("/index", auth, async (req, res) => {
 });
 
 // /api/contest/:id
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
     const contestId = req.params.id;
     const { isTeacher } = req.user;
