@@ -17,7 +17,12 @@ export const createContest = (contest, token) => {
   return axios.post(url, contest, { headers: { Authorization: `Bearer ${token}` } });
 };
 
-export const getContestById = (id) => {
+export const getContestById = (id, token) => {
   const url = `${API_URL}/api/contest/${id}`;
-  return axios.get(url);
+  return axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+};
+
+export const getContestsByUser = (token) => {
+  const url = `${API_URL}/api/contest/index`;
+  return axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
 };
