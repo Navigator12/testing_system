@@ -21,9 +21,9 @@ export const ContestList = () => {
 	return (
 		<div className={styles.wrapper}>
 			<ul className={styles.ulItems}>
-				{contests.map(contest => (
+				{contests.map((contest, index) => (
 					<li className={styles.liItem} onClick={() => handleRedirect(contest._id)} key={contest._id}>
-						{contest.name}
+						{index+1}. {contest.name}
 						<span>{new Date(contest.date).toLocaleDateString()}</span>
 					</li>
 				))}

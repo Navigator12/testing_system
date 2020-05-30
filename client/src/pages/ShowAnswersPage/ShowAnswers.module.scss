@@ -56,10 +56,6 @@
   .variant {
     margin: 1em 0;
   }
-
-  input {
-    border-radius: 10px;
-  }
 }
 
 .checker{
@@ -86,7 +82,6 @@
 }
 
 .answerWrongTest::before{
-  content: "\00d7";
+  content: "✖";
   margin-right: 10px;
-  font-size: 2em;
 }
