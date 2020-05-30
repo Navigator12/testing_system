@@ -132,7 +132,7 @@ router.post(
       else
       {
         const token = jwt.sign({ userId: user.id, isTeacher }, process.env.jwtSecret, {
-          expiresIn: "2h",
+          expiresIn: "6h",
         });
 
         res.json({ token, userId: user.id, isTeacher });
