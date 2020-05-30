@@ -36,3 +36,8 @@ export const getMark = (contestId, userId) => {
   const url = `${API_URL}/api/mark/${contestId}/${userId}`;
   return axios.get(url);
 }
+
+export const getUsers = (token) => {
+  const url = `${API_URL}/api/teacher/users`;
+  return axios.get(url, { headers: { Authorization: `Bearer ${token}` } } );
+}
