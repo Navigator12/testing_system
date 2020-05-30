@@ -42,13 +42,10 @@ router.get('/:contestId/:userId', async (req, res) => {
   try {
     const { contestId, userId } = req.params;
 
-    const mark = await Mark.find({
+    const mark = await Mark.findOne({
       contestId: new ObjectId(contestId),
       userId: new ObjectId(userId)
     });
-
-    if (!mark)
-      return res.status(404).json({ message: "There is no mark" });
 
     res.json({ mark });
   } catch (e) {

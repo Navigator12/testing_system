@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getContestById } from "../../agent";
+import { getMark } from "../../agent";
+import { createMark } from "../../agent";
 import AuthContext from "../../contexts/Auth";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -8,12 +10,16 @@ import styles from "./ShowContest.module.scss";
 
 export const ShowContest = () => {
   const contestId = useParams().id;
+  const [mark, setMark] = useState(null);
   const [currentContest, setCurrentContest] = useState(null);
   const [answers, setAnswers] = useState([]);
 
-  const { token } = useContext(AuthContext);
+  const { token, userId } = useContext(AuthContext);
 
   useEffect(() => {
+    getMark(contestId, userId)
+      .then(res => setMark(res.data.mark));
+
     getContestById(contestId, token).then((res) => {
       setCurrentContest(res.data.contest);
       setAnswers(new Array(res.data.contest.tasks.length).fill(""));
@@ -26,9 +32,22 @@ export const ShowContest = () => {
     setAnswers(newAnswers);
   };
 
-  const submitHandler = () => {};
+  const submitHandler = () => {
+  	createMark(contestId, answers, token)
+      .then(res => setMark(res.data.mark));
+	};
 
-  return (
+  return mark ? (
+    <div className={styles.wrapper}>
+      <h2>{currentContest?.name}</h2>
+
+      <div className={styles.mark}>
+        <p>Number of tasks: {currentContest?.tasks.length}</p>
+        <p>Correct: {mark.correct}</p>
+        <p>Estimation: {mark.estimation}</p>
+      </div>
+    </div>
+  ) : (
     <div className={styles.wrapper}>
       <h2>{currentContest?.name}</h2>
 
