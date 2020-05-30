@@ -1,0 +1,25 @@
+@import "src/styles/colors";
+table {
+  text-align: center;
+  border-collapse: collapse;
+  border-radius: 10px;
+  border: 1px solid $primaryColor;
+  overflow: hidden;
+  margin: auto;
+  min-width: 750px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  font-size: 1.2em;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: $primaryColor;
+  color: white;
+  font-weight: 700;
+  font-size: 1.4em;
+}
