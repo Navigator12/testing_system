@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './UsersList.module.scss';
 
-export const UsersList = ({ users }) => {
+export const UsersList = ({ users, clickSelect = () => {} }) => {
 	return (
 		<div className={styles.users}>
 			<table>
@@ -12,7 +12,9 @@ export const UsersList = ({ users }) => {
 					<th>Email</th>
 				</tr>
 				{users.map((user, index) => (
-					<tr>
+					<tr
+						onClick={() => clickSelect(user._id)}
+					>
 						<td>{index + 1}</td>
 						<td>{user.name}</td>
 						<td>{user.surname}</td>

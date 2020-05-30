@@ -27,6 +27,11 @@ export const getContestsByUser = (token) => {
   return axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
 };
 
+export const addUsersToContest = (contestId, studentIds, token) => {
+  const url = `${API_URL}/api/contest/${contestId}`;
+  return axios.put(url, { studentIds }, { headers: { Authorization: `Bearer ${token}` } });
+}
+
 export const createMark = (contestId, answers, token) => {
   const url = `${API_URL}/api/mark/create`;
   return axios.post(url, { contestId, answers }, { headers: { Authorization: `Bearer ${token}` } });

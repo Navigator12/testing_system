@@ -68,7 +68,7 @@ router.get("/:id", auth, async (req, res) => {
 
     let contest;
     if (isTeacher)
-      contest = await Contest.findOne({ _id: new ObjectId(contestId)}).populate('students');
+      contest = await Contest.findOne({ _id: new ObjectId(contestId)}).populate('students', '-password');
     else
       contest = await Contest.findOne({ _id: new ObjectId(contestId)}).select('-answers');
 
@@ -94,8 +94,9 @@ router.put("/:id", auth, async (req, res) => {
       return res.status(400).json({ message: "Контест не знайдено" });
 
     const { studentIds } = req.body;
+    let ids = studentIds.split(' ');
 
-    for (const id of studentIds) {
+    for (const id of ids) {
       let student;
       try {
         student = await User.findOne({ _id: new ObjectId(id) });

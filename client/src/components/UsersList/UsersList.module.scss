@@ -23,3 +23,7 @@ th {
   font-weight: 700;
   font-size: 1.4em;
 }
+
+.selected {
+  background-color: lighten($primaryColor, 50%);
+}

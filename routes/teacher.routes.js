@@ -14,7 +14,7 @@ router.get('/users', auth, async (req, res) => {
     if (!teacher)
       return res.status(400).json({ message: "Permission denied" });
 
-    const users = await User.find();
+    const users = await User.find().select('-password');
 
     res.json({ users });
   } catch (e) {

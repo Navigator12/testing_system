@@ -21,10 +21,12 @@
 }
 
 .wrapper {
-  h2 {
+  h1 {
     text-align: center;
-    font-size: 2em;
+    font-size: 3em;
+    font-weight: 600;
     color: darken($primaryColor, 15%);
+    margin: 0;
   }
 
   button {

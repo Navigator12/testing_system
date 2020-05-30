@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import AuthContext from "../../contexts/Auth/";
-import {getContestById, getUsers} from "../../agent";
+import {getContestById, getUsers, addUsersToContest} from "../../agent";
 import {useParams} from "react-router-dom";
 import styles from "./ShowAnswers.module.scss";
 import UsersList from "../../components/UsersList";
@@ -13,20 +13,45 @@ export const ShowAnswers = () => {
 
 	const [currentContest, setCurrentContest] = useState(null);
 	const [users, setUsers] = useState([]);
+	const [usersNotInContest, setUsersNotInContest] = useState([]);
 	const [activeTable, setActiveTable] = useState(false);
+	const [activeAddTable, setActiveAddTable] = useState(false);
+	const [selected, setSelected] = useState([]);
 
-	useEffect(() => {
+	const clickSelect = (id) => {
+		let newArray = [...selected];
+		let index = newArray.indexOf(id);
+
+		if (index === -1)
+			newArray.push(id);
+		else
+			newArray = newArray.filter(i => i !== id);
+
+		setSelected(newArray);
+	}
+
+	useEffect( () => {
 		getContestById(contestId, token).then((res) => {
 			setCurrentContest(res.data.contest);
-		});
-		getUsers(token).then((res) => {
-			setUsers(res.data.users);
+
+			return [...res.data.contest.students];
+		}).then(async (students) => {
+			const res = await getUsers(token);
+			const ids = students.map(e => e._id);
+
+			setUsers(res.data.users.filter(e => ids.includes(e._id)));
+			setUsersNotInContest(res.data.users.filter(e => !ids.includes(e._id)));
 		});
 	}, []);
 
+	const addUser = () => {
+		addUsersToContest(contestId, selected.join(' '), token)
+			.then(() => window.location.reload());
+	}
+
 	return (
 		<div className={styles.wrapper}>
-			<h2>{currentContest?.name}</h2>
+			<h1>{currentContest?.name}</h1>
 
 			<div className={styles.usersListShowSection} onClick={() => setActiveTable(!activeTable)}>
         {(activeTable) ? (
@@ -43,8 +68,25 @@ export const ShowAnswers = () => {
           </>
         )}
 			</div>
-
       {activeTable && <UsersList users={users}/>}
+
+			<div className={styles.usersListShowSection} onClick={() => setActiveAddTable(!activeAddTable)}>
+				{(activeAddTable) ? (
+					<>
+						<FontAwesomeIcon icon={faAngleDoubleRight} size='2x'/>
+						<span className={styles.usersListShow} onClick={addUser}>SAVE USERS</span>
+						<FontAwesomeIcon icon={faAngleDoubleRight} size='2x'/>
+					</>
+				) : (
+					<>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<FontAwesomeIcon icon={faAngleDoubleDown} size='2x'/>
+						<span className={styles.usersListShow}>ADD USERS</span>
+						<FontAwesomeIcon icon={faAngleDoubleDown} size='2x'/>
+					</>
+				)}
+			</div>
+			{activeAddTable && <UsersList users={usersNotInContest} clickSelect={clickSelect}/>}
 
 			{currentContest?.tasks.map((task, index) => {
 				if (task.type === "test") {
