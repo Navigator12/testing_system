@@ -1,3 +1,5 @@
+@import "../../styles/colors.scss";
+
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   max-width: 300px;
@@ -34,4 +36,58 @@
 
 .header__contest {
   text-align: center;
+}
+
+.wrapper {
+  h2 {
+    text-align: center;
+    font-size: 2em;
+    color: darken($primaryColor, 15%);
+  }
+
+  button {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+
+.task {
+  width: 450px;
+  height: auto;
+  background-color: $primaryColor;
+  margin: 1.5em auto;
+  padding-bottom: 1em;
+  border-radius: 15px;
+  border-top: 5px solid $primaryColor;
+  border-left: 5px solid $primaryColor;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+
+  .question {
+    font-size: 1.4em;
+    color: white;
+    text-align: center;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+  }
+
+  .variant {
+    margin: 1em 0;
+  }
+
+  input {
+    border-radius: 10px;
+  }
+}
+
+.checker{
+  position: absolute;
+  margin: 12px 12px 12px 35px;
+  cursor: pointer;
+}
+
+.for_check{
+  color: white;
+  font-size: 1.4em;
+  margin-left: 2.5em;
 }

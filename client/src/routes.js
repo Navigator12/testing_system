@@ -13,7 +13,7 @@ export const userRoutes = (isAuthenticated, isTeacher) => {
     {!isAuthenticated && <Route exact path='/register' component={RegisterPage} />}
     {isAuthenticated && <Route exact path='/' component={MainPage} />}
     {isAuthenticated && <Route exact path='/contests' component={ContestList} />}
-    {isTeacher && <Route path='/contest/builder' component={ContestBuilder} /> }
+    {isTeacher && <Route exact path='/contest/builder' component={ContestBuilder} /> }
     {isAuthenticated && <Route path='/contest/:id' component={ShowContest} /> }
   </Switch>
 };
