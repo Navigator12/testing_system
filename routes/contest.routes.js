@@ -68,7 +68,7 @@ router.get("/:id", auth, async (req, res) => {
 
     let contest;
     if (isTeacher)
-      contest = await Contest.findOne({ _id: new ObjectId(contestId)});
+      contest = await Contest.findOne({ _id: new ObjectId(contestId)}).populate('students');
     else
       contest = await Contest.findOne({ _id: new ObjectId(contestId)}).select('-answers');
 
