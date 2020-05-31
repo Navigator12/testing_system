@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { registerUser } from '../../agent';
 
 export const RegisterPage = () => {
-  const history = useHistory()
+  const history = useHistory();
 
   const [form, setForm] = useState({
     name: '',
@@ -12,13 +12,6 @@ export const RegisterPage = () => {
     email: '',
     password: '',
     isTeacher: false
-  });
-
-  const [labelClass, setLabelClass] = useState({
-    name: 'label',
-    surname: 'label',
-    email: 'label',
-    password: 'label',
   });
 
   const [error, setError] = useState(null);
@@ -40,93 +33,59 @@ export const RegisterPage = () => {
   const changeHandler = event => {
     if (event.target.name === 'isTeacher')
       setForm({...form, isTeacher: !form.isTeacher})
-
-    else {
+    else
       setForm({ ...form, [event.target.name]: event.target.value })
-      if (event.target.value)
-        setLabelClass({ ...labelClass, [event.target.name]: 'label active' })
-      else
-        setLabelClass({ ...labelClass, [event.target.name]: 'label' })
-    }
   }
 
   return (
-    <div className="form">
-      <ul className="tab-group">
-        <li className="tab"><Link to='/'>Log In</Link></li>
-        <li className="tab active"><Link to='/register'>Sign Up</Link></li>
-      </ul>
+    <div className="photo">
+      <div className="main">
+        <h1 className="h1">REGISTRATION</h1>
 
-      <div className="tab-content">
-        <h1>Sign Up for Free</h1>
+        <div>
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            className="input text"
+            required
+            autoComplete="off"
+            placeholder="Name"
+            onChange={changeHandler}
+          />
+          <input
+            type="text"
+            name="surname"
+            value={form.surname}
+            className="input text"
+            required
+            autoComplete="off"
+            placeholder="Second name"
+            onChange={changeHandler}
+          />
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            className="input email"
+            required
+            autoComplete="off"
+            placeholder="E-mail"
+            onChange={changeHandler}
+          />
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            className="input password"
+            required
+            autoComplete="off"
+            placeholder="Password"
+            onChange={changeHandler}
+          />
+        </div>
 
-        {error && <div className="auth-error">
-          <h2>{error}</h2>
-        </div>}
-
-        <form>
-          <div className="top-row">
-            <div className="field-wrap">
-              <label className={labelClass.name}>
-                First Name<span className="req">*</span>
-              </label>
-              <input
-                type="text"
-                className="input"
-                name="name"
-                value={form.name}
-                required
-                autoComplete="off"
-                onChange={changeHandler}
-              />
-            </div>
-
-            <div className="field-wrap">
-              <label className={labelClass.surname}>
-                Last Name<span className="req">*</span>
-              </label>
-              <input
-                type="text"
-                className="input"
-                name="surname"
-                value={form.surname}
-                required
-                autoComplete="off"
-                onChange={changeHandler}
-              />
-            </div>
-          </div>
-
-          <div className="field-wrap">
-            <label className={labelClass.email}>
-              Email Address<span className="req">*</span>
-            </label>
-            <input
-              type="email"
-              className="input"
-              name="email"
-              value={form.email}
-              required
-              autoComplete="off"
-              onChange={changeHandler}
-            />
-          </div>
-
-          <div className="field-wrap">
-            <label className={labelClass.password}>
-              Set A Password<span className="req">*</span>
-            </label>
-            <input
-              type="password"
-              className="input"
-              name="password"
-              value={form.password}
-              required
-              autoComplete="off"
-              onChange={changeHandler}
-            />
-          </div>
-
+        <div className="registration">
           <div className="as_admin">
             <input
               type="checkbox"
@@ -135,16 +94,17 @@ export const RegisterPage = () => {
               value={form.isTeacher}
               onChange={changeHandler}
             />
-            <label className="label">Register as teacher</label>
+            <label htmlFor="">Register as admin</label>
           </div>
 
-          <input
-            type="submit"
-            className="button button-block"
-            value="Get Started"
-            onClick={registerHandler}
-          />
-        </form>
+            <input
+              type="submit"
+              value="Register"
+              className="submit"
+              onClick={registerHandler}
+            />
+          <p>Already registered? <Link to="/">Log in here!</Link></p>
+        </div>
       </div>
     </div>
   );

@@ -198,7 +198,7 @@ export const ContestBuilder = () => {
       <div className={styles.footer_section}>
         <Button onClick={handleAddTest} value="Add test" variant="primary" />
         <Button onClick={handleAddQuestion} value="Add Question" variant="primary" />
-        <Button onClick={handleSubmitContest} value="Submit contest" variant="black" />
+        <Button onClick={name ? handleSubmitContest : () => {}} value="Submit contest" variant="black" />
       </div>
     </div>
   );
