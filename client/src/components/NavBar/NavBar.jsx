@@ -21,10 +21,7 @@ export const NavBar = () => {
         <div className="list_in_head">
           <ul className="smth_h2_ul">
             <li>
-              <NavLink to="/">Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/contests">Contests</NavLink>
+              <NavLink to="/">Contests</NavLink>
             </li>
             {auth.isTeacher && <li>
               <NavLink to="/contest/builder">Builder</NavLink>

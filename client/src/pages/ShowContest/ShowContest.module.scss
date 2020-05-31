@@ -62,8 +62,27 @@
 
 .checker{
   position: absolute;
-  margin: 12px 12px 12px 35px;
+  margin: 10px 12px 12px 35px;
   cursor: pointer;
+}
+
+.checker:before {
+  background-color: white;
+  height: 16px;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  color: white;
+  transition-property: background-color, border-color;
+  box-sizing: border-box;
+  display: inline-block;
+  content: close-quote;
+  transition-duration: .25s;
+  width: 16px;
+}
+
+.checker:checked:before {
+  background-color: $primaryColor;
+  border-color: white;
 }
 
 .for_check{
