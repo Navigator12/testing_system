@@ -105,14 +105,10 @@ router.put("/:id", auth, async (req, res) => {
       }
 
       if (student) {
-        student.contests.push(contest._id);
-        contest.students.push(student._id);
-
-        await student.save();
+        await User.updateOne({ _id: student._id}, { $addToSet: { contests: contest._id } });
+        await Contest.updateOne({ _id: contest._id}, { $addToSet: { students: student._id } });
       }
     }
-
-    await contest.save();
 
     res.json({ message: "Successfully updated" });
   } catch (e) {

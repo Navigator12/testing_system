@@ -1,4 +1,5 @@
 @import "src/styles/colors";
+
 table {
   text-align: center;
   border-collapse: collapse;
@@ -15,7 +16,15 @@ th, td {
   font-size: 1.2em;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr {
+  &:nth-child(even) {
+    background-color: darken(white, 5%)
+  }
+
+  &:hover {
+    background-color: darken(white, 12%);
+  }
+}
 
 th {
   background-color: $primaryColor;
@@ -25,5 +34,5 @@ th {
 }
 
 .selected {
-  background-color: lighten($primaryColor, 50%);
+  background-color: lighten($primaryColor, 30%) !important;
 }

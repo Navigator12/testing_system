@@ -30,11 +30,11 @@ export const ShowAnswers = () => {
 		setSelected(newArray);
 	}
 
-	useEffect( () => {
+	const initialize = () => {
 		getContestById(contestId, token).then((res) => {
 			setCurrentContest(res.data.contest);
 
-			return [...res.data.contest.students];
+			return res.data.contest.students;
 		}).then(async (students) => {
 			const res = await getUsers(token);
 			const ids = students.map(e => e._id);
@@ -42,11 +42,19 @@ export const ShowAnswers = () => {
 			setUsers(res.data.users.filter(e => ids.includes(e._id)));
 			setUsersNotInContest(res.data.users.filter(e => !ids.includes(e._id)));
 		});
+	};
+
+	useEffect( () => {
+		initialize();
 	}, []);
 
-	const addUser = () => {
-		addUsersToContest(contestId, selected.join(' '), token)
-			.then(() => window.location.reload());
+	const addUser = async () => {
+		if (selected.length) {
+			await addUsersToContest(contestId, selected.join(' '), token);
+
+			initialize();
+			setSelected([]);
+		}
 	}
 
 	return (
@@ -86,7 +94,7 @@ export const ShowAnswers = () => {
 					</>
 				)}
 			</div>
-			{activeAddTable && <UsersList users={usersNotInContest} clickSelect={clickSelect}/>}
+			{activeAddTable && <UsersList users={usersNotInContest} allowSelect={true} clickSelect={clickSelect}/>}
 
 			{currentContest?.tasks.map((task, index) => {
 				if (task.type === "test") {

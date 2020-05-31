@@ -28,7 +28,7 @@ export const RegisterPage = () => {
       event.preventDefault();
       registerUser(form)
         .then(res => {
-          history.push('/login')
+          history.push('/')
         }).catch(error => {
           setError(error.response.data.message);
         });
