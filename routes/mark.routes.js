@@ -9,8 +9,24 @@ const { ObjectId } = require("mongoose").Types;
 const router = Router();
 
 // api/mark/create
-router.post('/create', auth, async (req, res) => {
+router.post('/create',
+    [
+      check("contestId", "Некоректний id").isInt,
+      check("answers", "Мінімальна довжина поля 1 символ").isLength({
+        min: 1,
+      }),
+    ],
+    auth, async (req, res) => {
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+        message: "Hекоректні дані",
+      });
+    }
+
     const { userId } = req.user;
     const { contestId, answers } = req.body;
 

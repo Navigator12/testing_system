@@ -9,37 +9,58 @@ const { ObjectId } = require("mongoose").Types;
 const router = Router();
 
 // /api/contest/create
-router.post("/create", auth, async (req, res) => {
-  try {
-    const { userId, isTeacher } = req.user;
-    const { name, tasks, answers } = req.body;
+router.post("/create",
+    [
+      check("name", "Мінімальна довжина поля 1 символ").isLength({
+        min: 1,
+      }),
+      check("tasks", "Мінімальна довжина поля 1 символ").isLength({
+        min: 1,
+      }),
+      check("answers", "Мінімальна довжина поля 1 символ").isLength({
+        min: 1,
+      }),
+    ],
+    auth, async (req, res) => {
+    try {
+      const errors = validationResult(req);
 
-    const teacher = await Teacher.findOne({ _id: new ObjectId(userId) });
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array(),
+          message: "Введені некоректні дані",
+        });
+      }
 
-    if (!teacher)
-      return res.status(400).json({ message: "Викладача не знайдено" });
+      const { userId, isTeacher } = req.user;
+      const { name, tasks, answers } = req.body;
 
-    if (tasks.length !== answers.length)
-      return res.status(400).json({ message: "Invalid data" });
+      const teacher = await Teacher.findOne({ _id: new ObjectId(userId) });
 
-    const contest = new Contest({
-      teacher: userId,
-      name,
-      students: [],
-      answers,
-      tasks,
-    });
+      if (!teacher)
+        return res.status(400).json({ message: "Викладача не знайдено" });
 
-    teacher.contests.push(contest._id);
+      if (tasks.length !== answers.length)
+        return res.status(400).json({ message: "Invalid data" });
 
-    await teacher.save();
-    await contest.save();
+      const contest = new Contest({
+        teacher: userId,
+        name,
+        students: [],
+        answers,
+        tasks,
+      });
 
-    res.status(201).json({ message: "Контест створений", contestId: contest._id });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ message: "Something went wrong, try again" });
-  }
+      teacher.contests.push(contest._id);
+
+      await teacher.save();
+      await contest.save();
+
+      res.status(201).json({ message: "Контест створений", contestId: contest._id });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ message: "Something went wrong, try again" });
+    }
 });
 
 // /api/contest/index
@@ -105,10 +126,14 @@ router.put("/:id", auth, async (req, res) => {
       }
 
       if (student) {
-        await User.updateOne({ _id: student._id}, { $addToSet: { contests: contest._id } });
-        await Contest.updateOne({ _id: contest._id}, { $addToSet: { students: student._id } });
+        student.contests.push(contest._id);
+        contest.students.push(student._id);
+
+        await student.save();
       }
     }
+
+    await contest.save();
 
     res.json({ message: "Successfully updated" });
   } catch (e) {
